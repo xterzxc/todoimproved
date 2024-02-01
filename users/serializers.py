@@ -11,7 +11,6 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def get_token(cls, user):
         token = super(MyTokenObtainPairSerializer, cls).get_token(user)
         token['username'] = user.username
-        token['is_premium'] = user.is_premium
         return token
 
 
@@ -33,6 +32,9 @@ class RegisterSerializer(serializers.ModelSerializer):
         }
 
     def validate(self, attrs):
+        if attrs['username'] != attrs['username'].lower():
+            raise serializers.ValidationError({"username": "Username should be lowercase"})
+
         if attrs['password'] != attrs['password2']:
             raise serializers.ValidationError({"password": "Passwords are not same"})
 
