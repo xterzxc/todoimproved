@@ -1,16 +1,15 @@
 from pathlib import Path
 import os
-from dotenv import load_dotenv
+from dotenv import dotenv_values
 from datetime import timedelta
 
-
-
-load_dotenv()
+dotenv_path = '/etc/secrets/.env'
+config = dotenv_values()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-SECRET_KEY = str(os.getenv('SECRET_KEY'))
+SECRET_KEY = config.get('SECRET_KEY')
 
 DEBUG = True
 
@@ -64,11 +63,11 @@ WSGI_APPLICATION = 'todoimproved.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': str(os.getenv('NAME')),
-        'USER': str(os.getenv('USER')),
-        'PASSWORD': str(os.getenv('PASSWORD')),
-        'HOST': str(os.getenv('HOST')),
-        'PORT': str(os.getenv('PORT')),
+        'NAME': config.get('NAME'),
+        'USER': config.get('USER'),
+        'PASSWORD': config.get('PASSWORD'),
+        'HOST': config.get('HOST'),
+        'PORT': config.get('PORT'),
     }
 }
 
