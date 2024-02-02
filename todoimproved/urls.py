@@ -2,6 +2,8 @@ from django.urls import path
 from users import views as users_views
 from mainapp import views as mainapp_views
 from rest_framework_simplejwt.views import TokenRefreshView
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 
@@ -12,3 +14,5 @@ urlpatterns = [
     path('login/', users_views.MyObtainTokenPairView.as_view(), name='login'),
     path('login/refresh', TokenRefreshView.as_view(), name='token'),
 ]
+
+urlpatterns+= static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
