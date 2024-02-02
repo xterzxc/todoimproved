@@ -3,7 +3,7 @@ import os
 from dotenv import dotenv_values
 from datetime import timedelta
 
-dotenv_path = '/etc/secrets/.env'
+dotenv_path = '/etc/secrets/.env' # for render deployment ONLY
 config = dotenv_values()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -13,7 +13,7 @@ SECRET_KEY = config.get('SECRET_KEY')
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = config.get('ALLOWED_HOSTS')
 
 
 INSTALLED_APPS = [
@@ -89,11 +89,13 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
 }
-
 
 
 AUTH_USER_MODEL = 'users.CustomUser'
@@ -126,7 +128,7 @@ DEFAULTS = {
     'AUDIENCE': None,
     'ISSUER': None,
 
-    'AUTH_HEADER_TYPES': ('Bearer',),
+    'AUTH_HEADER_TYPES': ('JWT',),
     'USER_ID_FIELD': 'id',
     'USER_ID_CLAIM': 'user_id',
 
